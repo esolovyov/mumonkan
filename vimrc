@@ -9,29 +9,42 @@ call vundle#rc()
 "
 " My Bundles here:
 "
-" original repos on github
+"" original repos on github
 Bundle 'gmarik/vundle'
 Bundle 'vim-scripts/Decho'
 Bundle 'kien/ctrlp.vim'
 Bundle 'romanvbabenko/rails.vim'
 Bundle 'tComment'
-Bundle 'romanvbabenko/snipmate.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-rvm'
 Bundle "scrooloose/syntastic"
+Bundle "tpope/vim-surround"
 
 " resource repos
 Bundle "git://github.com/timcharper/textile.vim.git"
 Bundle "git://github.com/tpope/vim-markdown.git"
 Bundle "git://github.com/jinfield/vim-nginx.git"
 Bundle "git://github.com/tpope/vim-haml.git"
-Bundle "git://github.com/slim-template/vim-slim.git"
 Bundle "git://github.com/leshill/vim-json.git"
 Bundle "git://github.com/tmatilai/vim-monit.git"
 Bundle "git://github.com/t9md/vim-chef.git"
 Bundle "romanvbabenko/vim-asciidoc"
 
-Bundle "wgibbs/vim-irblack"
+Bundle "git://github.com/altercation/vim-colors-solarized.git"
+Bundle "git://github.com/scrooloose/nerdtree.git"
+Bundle "git://github.com/slim-template/vim-slim.git"
+Bundle "git://github.com/thoughtbot/vim-rspec"
+Bundle "git://github.com/kchmck/vim-coffee-script.git"
+Bundle 'git://github.com/tpope/vim-pastie.git'
+
+" Snippets support
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle 'garbas/vim-snipmate'
+Bundle 'honza/vim-snippets'
+
+Bundle 'bkad/CamelCaseMotion'
+Bundle 'majutsushi/tagbar'
 
 filetype plugin indent on     " required!
 syntax enable
@@ -79,7 +92,8 @@ set wildmode=list:longest,full
 
 "TODO should be handle exception if colorscheme not exists
 try
- colorscheme ir_black " koehler
+ colorscheme solarized "ir_black koehler
+ set background=dark
 catch " /^Vim:E121/
   colorscheme default
 endtry
@@ -98,7 +112,7 @@ if has("statusline") && !&cp
 
   " Start the status line
 
-  set statusline=%{hostname()}: 
+  set statusline=%{hostname()}:
   set statusline+=%f\ %m\ %r
 
   " Add rvm
@@ -132,12 +146,12 @@ endfunc
 
 nnoremap <c-l> :bp <cr>
 let mapleader = "\\"
-map <leader>l :bp<esc>
+map <leader>l :bp<esc> 
 
 "Colorscheme hotfix
 
-hi Pmenu      ctermfg=lightgray   ctermbg=darkgray    cterm=NONE
-hi PmenuSel   ctermfg=black       ctermbg=lightgray   cterm=NONE
+"hi Pmenu      ctermfg=lightgray   ctermbg=darkgray    cterm=NONE
+"hi PmenuSel   ctermfg=black       ctermbg=lightgray   cterm=NONE
 
 " Local config
 if filereadable(".vimrc.local")
@@ -149,6 +163,38 @@ command! Rapplication :e config/application.rb
 command! Rroutes :e config/routes.rb
 command! Rschema :e db/schema.rb
 command! Rgemfile :e Gemfile
+command! RTapplication :tabnew config/application.rb
+command! RTroutes :tabnew config/routes.rb
+command! RTschema :tabnew db/schema.rb
+command! RTgemfile :tabnew Gemfile
 
 " Automatically load .vimrc source when saved
 autocmd BufWritePost .vimrc source $MYVIMRC
+
+set guifont=Monaco:h13
+nnoremap <silent> <F12> :TagbarToggle<CR>
+nnoremap <silent> <F2> :NERDTreeToggle<CR>
+nnoremap <silent> <F3> :noh<CR>
+nnoremap <silent> <F4> :Ztest<CR>
+
+set colorcolumn=120
+highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
+let g:NERDTreeWinSize = 40
+
+let g:rspec_command = "!zeus test {spec}"
+command! Ztest :call RunCurrentSpecFile()
+
+let g:solarized_contrast = "high"
+
+" map w <Plug>CamelCaseMotion_w
+" map b <Plug>CamelCaseMotion_b
+" map e <Plug>CamelCaseMotion_e
+" sunmap w
+" sunmap b
+" sunmap e
+
+let g:tagbar_left = 1
+let g:tagbar_width = 40
+let g:tagbar_autofocus = 1
+
+call togglebg#map("<F5>")
