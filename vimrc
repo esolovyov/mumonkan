@@ -43,9 +43,6 @@ Bundle "tomtom/tlib_vim"
 Bundle 'garbas/vim-snipmate'
 Bundle 'honza/vim-snippets'
 
-Bundle 'bkad/CamelCaseMotion'
-Bundle 'majutsushi/tagbar'
-
 filetype plugin indent on     " required!
 syntax enable
 
@@ -55,8 +52,8 @@ if has("multi_byte")
     let &termencoding = &encoding
   endif
   set encoding=utf-8
-  setglobal fileencoding=utf-8
-  set fileencodings=utf-8
+  setglobal fileencoding=utf-8 bomb
+  set fileencodings=ucs-bom,utf-8,latin1
 endif
 
 set tabstop=2
@@ -198,3 +195,9 @@ let g:tagbar_width = 40
 let g:tagbar_autofocus = 1
 
 call togglebg#map("<F5>")
+
+function! s:setupMarkup()
+  nnoremap <leader>p :silent !open -a Marked.app '%:p'<cr>
+endfunction
+
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn} call s:setupMarkup()
